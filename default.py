@@ -9,19 +9,17 @@ __addonversion__ = __addon__.getAddonInfo('version')
 __language__     = __addon__.getLocalizedString
 
 def log(txt):
-    if isinstance (txt,str):
-        txt = txt.decode("utf-8")
-    message = u'%s: %s' % (__addonid__, txt)
-    xbmc.log(msg=message.encode("utf-8"), level=xbmc.LOGDEBUG)
+    message = f'{__addonid__}: {txt}'
+    xbmc.log(msg=message, level=xbmc.LOGDEBUG)
 
 class Main:
     def __init__( self ):
         log('version %s started' % __addonversion__ )
         self._parse_argv()
-        if self.TAG <> "":
+        if self.TAG != "":
             self._choose_action(self.TAG)      
             log("choose_action executed")
-        elif self.DBID <> "":
+        elif self.DBID != "":
             self._select_dialog()
         else:
             log("No DBID given")
@@ -152,7 +150,7 @@ class Main:
     def _choose_action( self,actionstring ):
              #override auto type
         log("choose_action executed")
-        if self.PARAM_TYPE <> "":
+        if self.PARAM_TYPE != "":
             self.TYPE = self.PARAM_TYPE
         if actionstring == "title" : 
             self._edit_db_string(xbmc.getInfoLabel('ListItem.Title'),self.TYPE,"title")
