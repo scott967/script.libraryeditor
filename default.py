@@ -41,9 +41,12 @@ class Main:
         if xbmc.getCondVisibility('Container.Content(movies)'):
             self.TYPE = "Movie"
             self._AddToList( xbmc.getLocalizedString(369),"title" )
+            self._AddToList( "sorttitle","sorttitle" )
             self._AddToList( xbmc.getLocalizedString(20376),"originaltitle" )
             self._AddToList( xbmc.getLocalizedString(345),"year" )
             self._AddToList( xbmc.getLocalizedString(515),"genre" )
+            self._AddToList( xbmc.getLocalizedString(572),"studio" )
+            self._AddToList( xbmc.getLocalizedString(20459),"tag" )
             self._AddToList( xbmc.getLocalizedString(20417),"writer" )
             self._AddToList( xbmc.getLocalizedString(20339),"director" )
             self._AddToList( xbmc.getLocalizedString(202),"tagline" )
@@ -51,9 +54,7 @@ class Main:
             self._AddToList( xbmc.getLocalizedString(203),"plotoutline" )
             self._AddToList( xbmc.getLocalizedString(13409),"top250" )
             self._AddToList( xbmc.getLocalizedString(20457),"set" )
-            self._AddToList( xbmc.getLocalizedString(20459),"tag" )
             self._AddToList( xbmc.getLocalizedString(21875),"country" )
-            self._AddToList( xbmc.getLocalizedString(572),"studio" )
             self._AddToList( xbmc.getLocalizedString(20074),"mpaa" )
             self._AddToList( xbmc.getLocalizedString(20410),"trailer" )
             self._AddToList( xbmc.getLocalizedString(567),"playcount" ) 
@@ -155,6 +156,8 @@ class Main:
             self.TYPE = self.PARAM_TYPE
         if actionstring == "title" : 
             self._edit_db_string(xbmc.getInfoLabel('ListItem.Title'),self.TYPE,"title")
+        elif actionstring == "sorttitle" :
+            self._edit_db_string(xbmc.getInfoLabel('ListItem.Title'),self.TYPE,"sorttitle")
         elif actionstring == "originaltitle" :
             self._edit_db_string(xbmc.getInfoLabel('ListItem.OriginalTitle'),self.TYPE,"originaltitle")
         elif actionstring == "year" :
