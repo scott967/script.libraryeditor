@@ -21,7 +21,7 @@ class Main:
         if self.TAG <> "":
             self._choose_action(self.TAG)      
             log("choose_action executed")
-        elif self.DBID <> "":
+        elif self.DBID <> 0:
             self._select_dialog()
         else:
             log("No DBID given")
