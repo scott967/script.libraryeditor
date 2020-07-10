@@ -280,7 +280,7 @@ class Main:
               #  InputLabel = Time.strftime('%Y-%m-%d')
                 InputLabel = time.strftime("%Y-%m-%d",conv)
             except Exception:
-                sys.exc_clear()
+                pass
             if ((type == "Song") or (type == "Album") or (type == "Artist")):
                 xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "AudioLibrary.Set%sDetails", "params": { "%s": "%s", "%sid":%s }}' % (type,label,InputLabel,type.lower(),self.DBID))
             else:
