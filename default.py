@@ -30,7 +30,7 @@ __addonversion__ = __addon__.getAddonInfo('version')
 __language__     = __addon__.getLocalizedString
 
 def log(txt:str) -> None:
-    """writes ouotput to Kodi log at DEBUG level
+    """writes output to Kodi log at DEBUG level
 
     Args:
         txt (str): text message to write into Kodi.log
@@ -236,9 +236,9 @@ class Main:
         elif actionstring == "top250" :
             self._edit_db_integer(self.TYPE,"top250")
         elif actionstring == "set" :
-            self._edit_db_string("",self.TYPE,"set")
+            self._edit_db_string(xbmc.getInfoLabel('ListItem.Set'),self.TYPE,"set")
         elif actionstring == "tag" :
-            self._edit_db_array("",self.TYPE,"tag")
+            self._edit_db_array(xbmc.getInfoLabel('ListItem.Tag'),self.TYPE,"tag")
         elif actionstring == "country" :
             self._edit_db_array(xbmc.getInfoLabel('ListItem.Country'),self.TYPE,"country")
         elif actionstring == "studio" :
