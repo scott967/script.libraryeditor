@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.libraryeditor" name="Library Editor Script" version="0.9.0+matrix.5" provider-name="phil65">
+<addon id="script.libraryeditor" name="Library Editor Script" version="0.9.0+matrix.6" provider-name="phil65">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0"/>
+		<import addon="script.module.dateutil" version="2.8.2"/>
 	</requires>
 	<extension point="xbmc.python.library" library="default.py" />
 	<extension point="xbmc.python.script" library="default.py">
