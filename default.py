@@ -15,10 +15,10 @@ Usage:
     editing.  User "OK" button updates the library.
 """
 
+import dateutil.parser as parser
 import json
 import os
 import sys
-import time
 
 import xbmc
 import xbmcaddon
@@ -372,9 +372,11 @@ class Main:
         if keyboard.isConfirmed():
             try:
                 InputLabel=keyboard.getText()
-                conv=time.strptime(InputLabel,"%d/%m/%Y")
+                try:
+                    InputLabel = parser.parse(InputLabel).isoformat()
+                except parser.ParserError:
+                    pass
               #  InputLabel = Time.strftime('%Y-%m-%d')
-                InputLabel = time.strftime("%Y-%m-%d",conv)
             except Exception:
                 pass
             if ((media_type == "Song") or (media_type == "Album") or (media_type == "Artist")):
