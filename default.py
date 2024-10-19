@@ -82,7 +82,7 @@ class Main:
             self._AddToList( xbmc.getLocalizedString(369),"title" )
             self._AddToList( xbmc.getLocalizedString(171),"sorttitle" )
             self._AddToList( xbmc.getLocalizedString(20376),"originaltitle" )
-            self._AddToList( xbmc.getLocalizedString(345),"year" )
+            self._AddToList( xbmc.getLocalizedString(20473),"premiered" )
             self._AddToList( xbmc.getLocalizedString(515),"genre" )
             self._AddToList( xbmc.getLocalizedString(572),"studio" )
             self._AddToList( xbmc.getLocalizedString(20459),"tag" )
@@ -207,8 +207,8 @@ class Main:
             self._edit_db_string(xbmc.getInfoLabel('ListItem.Title'),self.TYPE,"sorttitle")
         elif actionstring == "originaltitle" :
             self._edit_db_string(xbmc.getInfoLabel('ListItem.OriginalTitle'),self.TYPE,"originaltitle")
-        elif actionstring == "year" :
-            self._edit_db_integer(self.TYPE,"year")
+        elif actionstring == "premiered" :
+            self._edit_db_string(xbmc.getInfoLabel('ListItem.Premiered'), self.TYPE,"premiered")
         elif actionstring == "episode" :
             self._edit_db_integer(self.TYPE,"episode")
         elif actionstring == "season" :
