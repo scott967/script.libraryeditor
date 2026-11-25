@@ -7,3 +7,6 @@ v 0.5.0:
 
 v 0.9.0:
 - lot of fixes
+
+v 1.0.0
+- Python 3 only/Python 3.15
