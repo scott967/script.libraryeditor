@@ -1,28 +1,21 @@
 # -*- coding: utf-8 -*-
-"""This module provides facility for editinglibrary data.  
+"""This module provides facility for editinglibrary data.
 It provides a GUI for editing the library data, and a function for updating
 the library.
 """
 
-try:
-    lazy import json
-    lazy import os
-    lazy import sys
 
-    lazy import xbmc
-    lazy import xbmcaddon
-    lazy import xbmcgui
-    lazy from dateutil import parser
-except SyntaxError:
-    import json
-    import os
-    import sys
+__lazy_modules__ = ["json", "os", "xbmc",
+                    "xbmcaddon", "xbmcgui", "dateutil.parser"]
 
-    import xbmc
-    import xbmcaddon
-    import xbmcgui
-    from dateutil import parser
+import json
+import os
+import sys
 
+import xbmc
+import xbmcaddon
+import xbmcgui
+from dateutil import parser
 
 __addon__ = xbmcaddon.Addon()
 __addonid__ = __addon__.getAddonInfo('id')
@@ -65,7 +58,7 @@ class Main:
 
         try:
             params = dict(arg.split('=') for arg in sys.argv[1].split('&'))
-        except:
+        except Exception:
             params = {}
         self.DBID = int(params.get('DBID', False))
         self.PARAM_TYPE = str(params.get('type', ""))
@@ -203,140 +196,138 @@ class Main:
         log("choose_action executed")
         if self.PARAM_TYPE != "":
             self.TYPE = self.PARAM_TYPE
-        if actionstring == "title":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Title'), self.TYPE, "title")
-        elif actionstring == "sorttitle":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Title'), self.TYPE, "sorttitle")
-        elif actionstring == "originaltitle":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.OriginalTitle'), self.TYPE, "originaltitle")
-        elif actionstring == "premiered":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Premiered'), self.TYPE, "premiered")
-        elif actionstring == "episode":
-            self._edit_db_integer(self.TYPE, "episode")
-        elif actionstring == "season":
-            self._edit_db_integer(self.TYPE, "season")
-        elif actionstring == "track":
-            self._edit_db_integer(self.TYPE, "track")
-        elif actionstring == "disc":
-            self._edit_db_integer(self.TYPE, "disc")
-        elif actionstring == "genre":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Genre'), self.TYPE, "genre")
-        elif actionstring == "artist_genre":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Property(Artist_Genre)'), self.TYPE, "genre")
-        elif actionstring == "album_genre":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Property(Album_Genre)'), self.TYPE, "genre")
-        elif actionstring == "writer":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Writer'), self.TYPE, "writer")
-        elif actionstring == "director":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Director'), self.TYPE, "director")
-        elif actionstring == "tagline":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Tagline'), self.TYPE, "tagline")
-        elif actionstring == "plot":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Plot'), self.TYPE, "plot")
-        elif actionstring == "plotoutline":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.PlotOutline'), self.TYPE, "plotoutline")
-        elif actionstring == "top250":
-            self._edit_db_integer(self.TYPE, "top250")
-        elif actionstring == "set":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Set'), self.TYPE, "set")
-        elif actionstring == "tag":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Tag'), self.TYPE, "tag")
-        elif actionstring == "country":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Country'), self.TYPE, "country")
-        elif actionstring == "studio":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Studio'), self.TYPE, "studio")
-        elif actionstring == "mpaa":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Mpaa'), self.TYPE, "mpaa")
-        elif actionstring == "trailer":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Trailer'), self.TYPE, "trailer")
-        elif actionstring == "playcount":
-            self._edit_db_integer(self.TYPE, "playcount")
-        elif actionstring == "rating":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Rating'), self.TYPE, "rating")
-        elif actionstring == "premiered":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Premiered'), self.TYPE, "premiered")
-        elif actionstring == "arr_artist":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Artist'), self.TYPE, "artist")
-        elif actionstring == "str_artist":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Artist'), self.TYPE, "artist")
-        elif actionstring == "albumlabel":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Property(Album_Label)'), self.TYPE, "albumlabel")
-        elif actionstring == "album":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Album'), self.TYPE, "album")
-        elif actionstring == "tracknumber":  # TrackNumber (needs checking)
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.TrackNumber'), self.TYPE, "track")
-        elif actionstring == "firstaired":  # firstaired (needs checking)
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Premiered'), self.TYPE, "firstaired")
-        elif actionstring == "born":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Property(artist_Born)'), self.TYPE, "born")
-        elif actionstring == "formed":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Property(artist_Formed)'), self.TYPE, "formed")
-        elif actionstring == "artist_description":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Property(Artist_Description)'), self.TYPE, "description")
-        elif actionstring == "album_description":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Property(Album_Description)'), self.TYPE, "description")
-        elif actionstring == "died":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Property(Artist_Died)'), self.TYPE, "died")
-        elif actionstring == "disbanded":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Property(Artist_Disbanded)'), self.TYPE, "disbanded")
-        elif actionstring == "yearsactive":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Property(Artist_YearsActive)'), self.TYPE, "yearsactive")
-        elif actionstring == "comment":
-            self._edit_db_string(xbmc.getInfoLabel(
-                'ListItem.Comment'), self.TYPE, "comment")
-        elif actionstring == "artist_mood":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Property(Artist_Mood)'), self.TYPE, "mood")
-        elif actionstring == "artist_style":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Property(Artist_Style)'), self.TYPE, "style")
-        elif actionstring == "album_mood":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Property(Album_Mood)'), self.TYPE, "mood")
-        elif actionstring == "album_style":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Property(Album_Style)'), self.TYPE, "style")
-        elif actionstring == "instruments":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Property(Artist_Instrument)'), self.TYPE, "instrument")
-        elif actionstring == "themes":
-            self._edit_db_array(xbmc.getInfoLabel(
-                'ListItem.Property(Album_Theme)'), self.TYPE, "theme")
-        elif actionstring == "delete":
-            os.unlink(xbmc.getInfoLabel('ListItem.FilenameAndPath'))
+        match actionstring:
+            case "title":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Title'), self.TYPE, "title")
+            case "sorttitle":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Title'), self.TYPE, "sorttitle")
+            case "originaltitle":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.OriginalTitle'), self.TYPE, "originaltitle")
+            case "premiered":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Premiered'), self.TYPE, "premiered")
+            case "episode":
+                self._edit_db_integer(self.TYPE, "episode")
+            case "season":
+                self._edit_db_integer(self.TYPE, "season")
+            case "track":
+                self._edit_db_integer(self.TYPE, "track")
+            case "disc":
+                self._edit_db_integer(self.TYPE, "disc")
+            case "genre":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Genre'), self.TYPE, "genre")
+            case "artist_genre":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Property(Artist_Genre)'), self.TYPE, "genre")
+            case "album_genre":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Property(Album_Genre)'), self.TYPE, "genre")
+            case "writer":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Writer'), self.TYPE, "writer")
+            case "director":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Director'), self.TYPE, "director")
+            case "tagline":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Tagline'), self.TYPE, "tagline")
+            case "plot":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Plot'), self.TYPE, "plot")
+            case "plotoutline":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.PlotOutline'), self.TYPE, "plotoutline")
+            case "top250":
+                self._edit_db_integer(self.TYPE, "top250")
+            case "set":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Set'), self.TYPE, "set")
+            case "tag":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Tag'), self.TYPE, "tag")
+            case "country":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Country'), self.TYPE, "country")
+            case "studio":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Studio'), self.TYPE, "studio")
+            case "mpaa":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Mpaa'), self.TYPE, "mpaa")
+            case "trailer":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Trailer'), self.TYPE, "trailer")
+            case "playcount":
+                self._edit_db_integer(self.TYPE, "playcount")
+            case "rating":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Rating'), self.TYPE, "rating")
+            case "arr_artist":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Artist'), self.TYPE, "artist")
+            case "str_artist":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Artist'), self.TYPE, "artist")
+            case "albumlabel":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Property(Album_Label)'), self.TYPE, "albumlabel")
+            case "album":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Album'), self.TYPE, "album")
+            case "tracknumber":  # TrackNumber (needs checking)
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.TrackNumber'), self.TYPE, "track")
+            case "firstaired":  # firstaired (needs checking)
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Premiered'), self.TYPE, "firstaired")
+            case "born":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Property(artist_Born)'), self.TYPE, "born")
+            case "formed":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Property(artist_Formed)'), self.TYPE, "formed")
+            case "artist_description":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Property(Artist_Description)'), self.TYPE, "description")
+            case "album_description":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Property(Album_Description)'), self.TYPE, "description")
+            case "died":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Property(Artist_Died)'), self.TYPE, "died")
+            case "disbanded":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Property(Artist_Disbanded)'), self.TYPE, "disbanded")
+            case "yearsactive":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Property(Artist_YearsActive)'), self.TYPE, "yearsactive")
+            case "comment":
+                self._edit_db_string(xbmc.getInfoLabel(
+                    'ListItem.Comment'), self.TYPE, "comment")
+            case "artist_mood":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Property(Artist_Mood)'), self.TYPE, "mood")
+            case "artist_style":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Property(Artist_Style)'), self.TYPE, "style")
+            case "album_mood":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Property(Album_Mood)'), self.TYPE, "mood")
+            case "album_style":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Property(Album_Style)'), self.TYPE, "style")
+            case "instruments":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Property(Artist_Instrument)'), self.TYPE, "instrument")
+            case "themes":
+                self._edit_db_array(xbmc.getInfoLabel(
+                    'ListItem.Property(Album_Theme)'), self.TYPE, "theme")
+            case "delete":
+                os.unlink(xbmc.getInfoLabel('ListItem.FilenameAndPath'))
 
     def _AddToList(self, Label: str, identifier: str):
         """Adds display string and JSON param string to library edit attribute
@@ -376,7 +367,7 @@ class Main:
                                     f'"params": {{ "{label}": {string_array}, '
                                     f'"{media_type.lower()}id":{self.DBID} }}}}')
         else:
-            return ""
+            return None
 
     def _edit_db_integer(self, media_type: str, label: str):
         """edit an attribute that takes an integer value
@@ -432,4 +423,4 @@ class Main:
                                     f'"params": {{ "{label}": "{InputLabel}", '
                                     f'"{media_type.lower()}id":{self.DBID} }}}}')
         else:
-            return ""
+            return None
