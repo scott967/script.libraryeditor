@@ -16,6 +16,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 from dateutil import parser
+from resources.lib import constants
 
 __addon__ = xbmcaddon.Addon()
 __addonid__ = __addon__.getAddonInfo('id')
@@ -72,108 +73,29 @@ class Main:
 
         self.modeselect = []
         self.identifierlist = []
+        self.TYPE = ""
         if xbmc.getCondVisibility('Container.Content(movies)'):
             self.TYPE = "Movie"
-            self._AddToList(xbmc.getLocalizedString(369), "title")
-            self._AddToList(xbmc.getLocalizedString(171), "sorttitle")
-            self._AddToList(xbmc.getLocalizedString(20376), "originaltitle")
-            self._AddToList(xbmc.getLocalizedString(20473), "premiered")
-            self._AddToList(xbmc.getLocalizedString(515), "genre")
-            self._AddToList(xbmc.getLocalizedString(572), "studio")
-            self._AddToList(xbmc.getLocalizedString(20459), "tag")
-            self._AddToList(xbmc.getLocalizedString(20417), "writer")
-            self._AddToList(xbmc.getLocalizedString(20339), "director")
-            self._AddToList(xbmc.getLocalizedString(202), "tagline")
-            self._AddToList(xbmc.getLocalizedString(207), "plot")
-            self._AddToList(xbmc.getLocalizedString(203), "plotoutline")
-            self._AddToList(xbmc.getLocalizedString(13409), "top250")
-            self._AddToList(xbmc.getLocalizedString(20457), "set")
-            self._AddToList(xbmc.getLocalizedString(21875), "country")
-            self._AddToList(xbmc.getLocalizedString(20074), "mpaa")
-            self._AddToList(xbmc.getLocalizedString(20410), "trailer")
-            self._AddToList(xbmc.getLocalizedString(567), "playcount")
-            self._AddToList(xbmc.getLocalizedString(563), "rating")
         elif xbmc.getCondVisibility('Container.Content(tvshows)'):
             self.TYPE = "TVShow"
-            self._AddToList(xbmc.getLocalizedString(369), "title")
-            self._AddToList(xbmc.getLocalizedString(20376), "originaltitle")
-            self._AddToList(xbmc.getLocalizedString(515), "genre")
-            self._AddToList(xbmc.getLocalizedString(207), "plot")
-            self._AddToList(xbmc.getLocalizedString(20459), "tag")
-            self._AddToList(xbmc.getLocalizedString(572), "studio")
-            self._AddToList(xbmc.getLocalizedString(20074), "mpaa")
-            self._AddToList(xbmc.getLocalizedString(567), "playcount")
-            self._AddToList(xbmc.getLocalizedString(563), "rating")
-            self._AddToList(__language__(32001), "premiered")
         elif xbmc.getCondVisibility('Container.Content(musicvideos)'):
             self.TYPE = "MusicVideo"
-            self._AddToList(xbmc.getLocalizedString(369), "title")
-            self._AddToList(xbmc.getLocalizedString(345), "year")
-            self._AddToList(xbmc.getLocalizedString(515), "genre")
-            self._AddToList(xbmc.getLocalizedString(20339), "director")
-            self._AddToList(xbmc.getLocalizedString(207), "plot")
-            self._AddToList(xbmc.getLocalizedString(20459), "tag")
-            self._AddToList(xbmc.getLocalizedString(572), "studio")
-            self._AddToList(xbmc.getLocalizedString(567), "playcount")
-            self._AddToList(xbmc.getLocalizedString(558), "album")
-            self._AddToList(xbmc.getLocalizedString(557), "arr_artist")
-            self._AddToList(xbmc.getLocalizedString(554), "track")
         elif xbmc.getCondVisibility('Container.Content(episodes)'):
             self.TYPE = "Episode"
-            self._AddToList(xbmc.getLocalizedString(369), "title")
-            self._AddToList(xbmc.getLocalizedString(20376), "originaltitle")
-            self._AddToList(xbmc.getLocalizedString(515), "genre")
-            self._AddToList(xbmc.getLocalizedString(207), "plot")
-            self._AddToList(xbmc.getLocalizedString(20339), "director")
-            self._AddToList(xbmc.getLocalizedString(20417), "writer")
-            self._AddToList(xbmc.getLocalizedString(20459), "tag")
-            self._AddToList(xbmc.getLocalizedString(572), "studio")
-            self._AddToList(xbmc.getLocalizedString(20074), "mpaa")
-            self._AddToList(xbmc.getLocalizedString(567), "playcount")
-            self._AddToList(xbmc.getLocalizedString(563), "rating")
-            # self._AddToList( xbmc.getLocalizedString(20416),"firstaired" )
-            # self._AddToList( xbmc.getLocalizedString(20416),"title" )
-            self._AddToList(xbmc.getLocalizedString(20373), "season")
-            self._AddToList(xbmc.getLocalizedString(20359), "episode")
         elif xbmc.getCondVisibility('Container.Content(artists)'):
             self.TYPE = "Artist"
-            # self._AddToList( xbmc.getLocalizedString(557),"str_artist" )
-            self._AddToList(xbmc.getLocalizedString(515), "artist_genre")
-            self._AddToList(xbmc.getLocalizedString(21893), "born")
-            self._AddToList(xbmc.getLocalizedString(21894), "formed")
-            self._AddToList(xbmc.getLocalizedString(
-                21821), "artist_description")
-            self._AddToList(xbmc.getLocalizedString(21897), "died")
-            self._AddToList(xbmc.getLocalizedString(21896), "disbanded")
-            self._AddToList(xbmc.getLocalizedString(21898), "yearsactive")
-            self._AddToList(xbmc.getLocalizedString(175), "artist_mood")
-            self._AddToList(xbmc.getLocalizedString(176), "artist_style")
-            self._AddToList(xbmc.getLocalizedString(21892), "instruments")
         elif xbmc.getCondVisibility('Container.Content(albums)'):
             self.TYPE = "Album"
-            # self._AddToList( xbmc.getLocalizedString(369),"title" )
-            # self._AddToList( xbmc.getLocalizedString(557),"arr_artist" )
-            self._AddToList(xbmc.getLocalizedString(345), "year")
-            self._AddToList(xbmc.getLocalizedString(175), "album_mood")
-            self._AddToList(xbmc.getLocalizedString(176), "album_style")
-            self._AddToList(xbmc.getLocalizedString(515), "album_genre")
-            self._AddToList(xbmc.getLocalizedString(21895), "themes")
-            # self._AddToList( xbmc.getLocalizedString(515),"type" )
-            self._AddToList(xbmc.getLocalizedString(21899), "albumlabel")
-            self._AddToList(xbmc.getLocalizedString(
-                21821), "album_description")
-            self._AddToList(xbmc.getLocalizedString(563), "rating")
         elif xbmc.getCondVisibility('Container.Content(songs)'):
             self.TYPE = "Song"
-            self._AddToList(xbmc.getLocalizedString(369), "title")
-            self._AddToList(xbmc.getLocalizedString(557), "arr_artist")
-            self._AddToList(xbmc.getLocalizedString(558), "album")
-            self._AddToList(xbmc.getLocalizedString(515), "genre")
-            self._AddToList(xbmc.getLocalizedString(345), "year")
-            self._AddToList(xbmc.getLocalizedString(563), "rating")
-            self._AddToList(xbmc.getLocalizedString(569), "comment")
-            self._AddToList(xbmc.getLocalizedString(427), "disc")
-            self._AddToList(xbmc.getLocalizedString(554), "Track")
+
+        if self.TYPE in constants.MEDIA_TYPE_ATTRIBUTES:
+            for identifier, string_id in constants.MEDIA_TYPE_ATTRIBUTES[
+                    self.TYPE].items():
+                self._AddToList(
+                    xbmc.getLocalizedString(string_id), identifier)
+
+        if self.TYPE == "Song":
             self._AddToList("Delete File", "delete")
         dialogSelection = xbmcgui.Dialog()
         self.Edit_Selection = dialogSelection.select(
